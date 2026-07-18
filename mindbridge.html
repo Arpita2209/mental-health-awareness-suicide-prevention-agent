@@ -1,0 +1,922 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>MindBridge – Mental Health Awareness & Support</title>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f4f8;--surface:#fff;--surface2:#f7f8fa;--border:#dde3ec;
+  --text:#1a2332;--muted:#57606a;--accent:#4a7fc1;--green:#2e7d6e;
+  --green-light:#e6f4f1;--amber:#b45309;--amber-light:#fef3c7;
+  --red:#b91c1c;--red-light:#fef2f2;--purple:#6d4c9e;--purple-light:#f3eeff;
+  --teal:#0e7490;--teal-light:#ecfeff;--radius:12px;
+  --shadow:0 2px 12px rgba(0,0,0,.07);--shadow-md:0 4px 24px rgba(0,0,0,.12);
+}
+html{scroll-behavior:smooth}
+body{font-family:-apple-system,"Segoe UI",system-ui,sans-serif;font-size:15px;line-height:1.65;color:var(--text);background:var(--bg)}
+
+/* NAV */
+nav{position:sticky;top:0;z-index:200;background:var(--surface);border-bottom:1px solid var(--border);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:58px;box-shadow:0 1px 8px rgba(0,0,0,.06)}
+.nav-brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:18px;color:var(--accent);text-decoration:none}
+.nav-links{display:flex;gap:4px;flex-wrap:wrap}
+.nav-links a{padding:6px 13px;border-radius:20px;font-size:13px;font-weight:500;color:var(--muted);text-decoration:none;transition:background .15s,color .15s}
+.nav-links a:hover{background:var(--bg);color:var(--accent)}
+.nav-cta{background:var(--red)!important;color:#fff!important;padding:6px 16px!important;border-radius:20px!important;font-weight:600!important}
+.nav-cta:hover{background:#991b1b!important}
+
+/* PAGE — two-column layout */
+.page-outer{max-width:1300px;margin:0 auto;padding:0 20px 60px;display:flex;gap:28px;align-items:flex-start}
+.page-left{flex:1;min-width:0;padding-top:0}
+.page-right{width:380px;flex-shrink:0;position:sticky;top:70px;height:calc(100vh - 90px);display:flex;flex-direction:column}
+
+/* HERO */
+.hero{background:linear-gradient(135deg,#e8f0fb,#eef6f3 50%,#f0eeff);border-radius:var(--radius);margin:28px 0 24px;padding:40px 32px;text-align:center;border:1px solid var(--border)}
+.hero-badge{display:inline-block;background:var(--accent);color:#fff;font-size:11px;font-weight:700;letter-spacing:.6px;padding:4px 12px;border-radius:20px;margin-bottom:14px;text-transform:uppercase}
+.hero h1{font-size:28px;font-weight:800;line-height:1.25;margin-bottom:12px}
+.hero h1 span{color:var(--accent)}
+.hero p{color:var(--muted);max-width:480px;margin:0 auto 22px;font-size:14.5px}
+.hero-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+
+/* BTN */
+.btn{display:inline-flex;align-items:center;gap:7px;padding:11px 22px;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;border:none;text-decoration:none;transition:opacity .15s,transform .1s;font-family:inherit}
+.btn:hover{opacity:.88;transform:translateY(-1px)}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-danger{background:var(--red);color:#fff}
+.btn-green{background:var(--green);color:#fff}
+.btn-outline{background:transparent;border:1.5px solid var(--border);color:var(--text)}
+.btn-sm{padding:7px 14px;font-size:13px}
+
+/* DISCLAIMER */
+.disclaimer{background:var(--amber-light);border:1px solid #fcd34d;border-radius:var(--radius);padding:14px 18px;margin-bottom:28px;display:flex;gap:12px;align-items:flex-start}
+.disclaimer p{font-size:13px;color:#78350f;line-height:1.5}
+
+/* SECTION */
+.section-hd{margin-bottom:20px}
+.section-hd h2{font-size:20px;font-weight:700;margin-bottom:4px}
+.section-hd p{font-size:13.5px;color:var(--muted)}
+.section-tag{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.5px;text-transform:uppercase;padding:2px 9px;border-radius:10px;margin-bottom:6px}
+.tag-blue{background:#dbeafe;color:#1e40af}
+.tag-green{background:var(--green-light);color:var(--green)}
+.tag-purple{background:var(--purple-light);color:var(--purple)}
+.tag-teal{background:var(--teal-light);color:var(--teal)}
+.tag-red{background:var(--red-light);color:var(--red)}
+
+/* CARD */
+.card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow);margin-bottom:24px}
+
+/* MOOD */
+.mood-grid{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.mood-btn{flex:1;min-width:70px;padding:14px 8px;border-radius:10px;border:2px solid var(--border);background:var(--surface2);cursor:pointer;text-align:center;transition:all .15s;font-size:13px;color:var(--muted);font-family:inherit}
+.mood-btn .mood-emoji{font-size:26px;display:block;margin-bottom:6px}
+.mood-btn:hover{border-color:var(--accent);background:#eef4fd}
+.mood-btn.selected{border-color:var(--accent);background:#dbeafe;color:var(--accent);font-weight:600}
+.mood-feedback{margin-top:14px;padding:14px 16px;border-radius:8px;background:var(--green-light);border:1px solid #86efac;font-size:13.5px;color:#14532d;display:none}
+.mood-feedback.show{display:block}
+.mood-feedback.warn{background:var(--amber-light);border-color:#fcd34d;color:#78350f}
+.mood-feedback.alert{background:var(--red-light);border-color:#fca5a5;color:var(--red)}
+
+/* JOURNAL */
+.journal-wrap textarea{width:100%;min-height:130px;padding:14px;border-radius:8px;border:1.5px solid var(--border);font-family:inherit;font-size:14px;color:var(--text);background:var(--surface2);resize:vertical;line-height:1.6;outline:none;transition:border-color .15s}
+.journal-wrap textarea:focus{border-color:var(--accent);background:#fff}
+.journal-actions{display:flex;gap:10px;margin-top:12px;align-items:center;flex-wrap:wrap}
+.journal-char{font-size:12px;color:var(--muted);margin-left:auto}
+.analysis-result{margin-top:16px;padding:16px;border-radius:8px;display:none;border:1px solid var(--border);background:var(--surface2)}
+.analysis-result.show{display:block}
+.risk-bar{height:8px;border-radius:4px;background:var(--border);overflow:hidden;margin-top:8px}
+.risk-bar-fill{height:100%;border-radius:4px;transition:width .6s ease}
+.fill-low{background:#22c55e}.fill-medium{background:#f59e0b}.fill-high{background:#ef4444}
+
+/* RESOURCES */
+.resource-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:560px){.resource-grid{grid-template-columns:1fr}}
+.resource-card{border:1px solid var(--border);border-radius:10px;padding:18px;background:var(--surface2);cursor:pointer;transition:box-shadow .15s,border-color .15s}
+.resource-card:hover{box-shadow:var(--shadow-md);border-color:var(--accent)}
+.resource-card h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.resource-card p{font-size:12.5px;color:var(--muted);line-height:1.5}
+.ri{width:34px;height:34px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+.ri-blue{background:#dbeafe}.ri-green{background:var(--green-light)}.ri-purple{background:var(--purple-light)}.ri-teal{background:var(--teal-light)}
+
+/* TIPS */
+.tips-list{list-style:none}
+.tips-list li{padding:11px 14px;border-radius:8px;margin-bottom:8px;background:var(--surface2);border:1px solid var(--border);font-size:13.5px;display:flex;align-items:flex-start;gap:10px}
+.tip-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+
+/* TABS */
+.tab-bar{display:flex;gap:2px;background:var(--bg);border-radius:8px;padding:3px;margin-bottom:18px;border:1px solid var(--border)}
+.tab-btn{flex:1;padding:8px;border:none;border-radius:6px;background:transparent;font-family:inherit;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;transition:all .15s}
+.tab-btn.active{background:var(--surface);color:var(--accent);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.08)}
+.tab-panel{display:none}
+.tab-panel.active{display:block}
+
+/* BREATHING */
+.breathing-wrap{text-align:center;padding:10px 0 20px}
+.breath-circle{width:120px;height:120px;border-radius:50%;background:#dbeafe;border:3px solid var(--accent);margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--accent);font-weight:600;transition:transform 4s ease-in-out}
+.breath-circle.inhale{transform:scale(1.5)}
+.breath-circle.exhale{transform:scale(1)}
+.breath-controls{display:flex;gap:10px;justify-content:center;margin-top:12px}
+
+/* PREDICTOR */
+.predictor-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:6px}
+@media(max-width:540px){.predictor-grid{grid-template-columns:1fr}}
+.predictor-item label{display:block;font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:6px}
+.predictor-item select,.predictor-item input[type=range]{width:100%}
+.predictor-item select{padding:8px 10px;border-radius:7px;border:1.5px solid var(--border);background:var(--surface2);font-family:inherit;font-size:13.5px;color:var(--text);outline:none}
+.predictor-item input[type=range]{accent-color:var(--accent);cursor:pointer}
+.predict-output{margin-top:16px;display:none;padding:16px;border-radius:8px;border:1px solid var(--border)}
+.predict-output.show{display:block}
+
+/* HELPLINES */
+.helpline-list{list-style:none}
+.helpline-list li{display:flex;align-items:center;gap:14px;padding:14px 0;border-bottom:1px solid var(--border)}
+.helpline-list li:last-child{border-bottom:none}
+.hl-icon{width:38px;height:38px;border-radius:50%;background:var(--red-light);display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.hl-info{flex:1}
+.hl-info strong{display:block;font-size:14px}
+.hl-info span{font-size:12.5px;color:var(--muted)}
+.hl-number{font-size:15px;font-weight:700;color:var(--red);text-decoration:none}
+.hl-number:hover{text-decoration:underline}
+
+/* WELLNESS RING */
+.wellness-score{display:flex;align-items:center;gap:24px;flex-wrap:wrap;padding:10px 0}
+.score-ring{position:relative;width:90px;height:90px;flex-shrink:0}
+.score-ring svg{transform:rotate(-90deg)}
+.ring-text{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font-size:18px;font-weight:800;color:var(--accent);text-align:center}
+.pillars{display:flex;flex-direction:column;gap:8px;margin-top:8px}
+.pillar{display:flex;align-items:center;gap:10px;font-size:12.5px}
+.pillar-label{width:90px;color:var(--muted)}
+.pillar-bar{flex:1;height:6px;border-radius:3px;background:var(--border)}
+.pillar-fill{height:100%;border-radius:3px}
+.p-sleep{background:#818cf8}.p-social{background:#34d399}.p-stress{background:#f87171}.p-exercise{background:#60a5fa}
+.pillar-pct{width:30px;text-align:right;color:var(--muted)}
+
+/* ── CHAT SIDEBAR ── */
+.chat-sidebar-wrap{display:flex;flex-direction:column;height:100%;padding-top:28px}
+.chat-sidebar-hd{margin-bottom:12px;flex-shrink:0}
+.chat-sidebar-hd h2{font-size:16px;font-weight:700;margin-bottom:2px}
+.chat-sidebar-hd p{font-size:12px;color:var(--muted)}
+/* ── CHAT UI ── */
+.chat-section{margin-bottom:28px}
+.chat-container{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-md);overflow:hidden;display:flex;flex-direction:column;height:520px}
+.page-right .chat-container{flex:1;height:auto;border-radius:var(--radius);min-height:0}
+.chat-header{background:var(--accent);color:#fff;padding:16px 20px;display:flex;align-items:center;gap:12px;flex-shrink:0}
+.chat-header .ch-avatar{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:20px}
+.chat-header .ch-info strong{display:block;font-size:15px;font-weight:700}
+.chat-header .ch-info span{font-size:12px;opacity:.85}
+.chat-header .ch-status{width:9px;height:9px;border-radius:50%;background:#4ade80;margin-left:auto;box-shadow:0 0 0 2px rgba(255,255,255,.4)}
+.chat-messages{flex:1;overflow-y:auto;padding:20px;display:flex;flex-direction:column;gap:12px;background:#f8fafc}
+.msg{display:flex;align-items:flex-end;gap:8px;max-width:82%}
+.msg.bot{align-self:flex-start}
+.msg.user{align-self:flex-end;flex-direction:row-reverse}
+.msg-avatar{width:30px;height:30px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0}
+.msg.user .msg-avatar{background:var(--green)}
+.msg-bubble{padding:11px 15px;border-radius:16px;font-size:13.5px;line-height:1.55;max-width:100%}
+.msg.bot .msg-bubble{background:#fff;border:1px solid var(--border);border-bottom-left-radius:4px;color:var(--text)}
+.msg.user .msg-bubble{background:var(--accent);color:#fff;border-bottom-right-radius:4px}
+.msg-time{font-size:10.5px;color:var(--muted);margin-top:3px;text-align:right}
+.msg.bot .msg-time{text-align:left}
+.typing{display:flex;gap:4px;padding:11px 15px;background:#fff;border:1px solid var(--border);border-radius:16px;border-bottom-left-radius:4px;align-items:center;width:60px}
+.typing span{width:7px;height:7px;border-radius:50%;background:var(--muted);animation:blink 1.2s infinite}
+.typing span:nth-child(2){animation-delay:.2s}
+.typing span:nth-child(3){animation-delay:.4s}
+@keyframes blink{0%,80%,100%{opacity:.3}40%{opacity:1}}
+.chat-suggestions{padding:10px 20px;background:var(--surface2);border-top:1px solid var(--border);display:flex;gap:8px;flex-wrap:wrap;flex-shrink:0}
+.suggestion-chip{padding:6px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface);font-size:12.5px;color:var(--accent);cursor:pointer;transition:all .15s;white-space:nowrap;font-family:inherit}
+.suggestion-chip:hover{background:var(--accent);color:#fff;border-color:var(--accent)}
+.chat-input-row{display:flex;align-items:center;gap:10px;padding:14px 16px;border-top:1px solid var(--border);background:var(--surface);flex-shrink:0}
+.chat-input{flex:1;padding:10px 14px;border-radius:22px;border:1.5px solid var(--border);font-family:inherit;font-size:14px;outline:none;transition:border-color .15s;background:var(--surface2)}
+.chat-input:focus{border-color:var(--accent);background:#fff}
+.chat-send{width:40px;height:40px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .15s;flex-shrink:0}
+.chat-send:hover{background:#3b6fad}
+.chat-send svg{stroke:#fff}
+
+/* FLOATING CHAT BUTTON — hidden on wide screens, shown on mobile */
+.float-chat-btn{display:none;position:fixed;bottom:28px;right:28px;z-index:300;width:58px;height:58px;border-radius:50%;background:var(--accent);border:none;cursor:pointer;box-shadow:0 4px 20px rgba(74,127,193,.45);align-items:center;justify-content:center;transition:transform .2s,background .15s}
+.float-chat-btn:hover{transform:scale(1.1);background:#3b6fad}
+.float-badge{position:absolute;top:-4px;right:-4px;background:var(--red);color:#fff;font-size:10px;font-weight:700;width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:2px solid #fff}
+
+/* ALERT */
+.alert-banner{display:none;position:fixed;bottom:100px;right:24px;z-index:400;background:var(--red);color:#fff;border-radius:10px;padding:14px 18px;max-width:320px;box-shadow:var(--shadow-md);font-size:13.5px}
+.alert-banner.show{display:block}
+.alert-banner strong{display:block;margin-bottom:4px;font-size:14.5px}
+.ab-close{float:right;background:none;border:none;color:#fff;cursor:pointer;font-size:16px;margin-top:-2px}
+
+/* MODAL */
+.modal-backdrop{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:500;align-items:center;justify-content:center;padding:20px}
+.modal-backdrop.open{display:flex}
+.modal{background:var(--surface);border-radius:var(--radius);padding:28px;max-width:460px;width:100%;box-shadow:var(--shadow-md);border:1px solid var(--border)}
+.modal .close-btn{float:right;background:none;border:none;font-size:20px;cursor:pointer;color:var(--muted)}
+
+/* FOOTER */
+.site-footer{padding:20px;border-top:1px solid var(--border);text-align:center;font-size:12px;color:var(--muted)}
+
+/* hide inline chat section on wide — it lives in sidebar */
+@media(min-width:901px){
+  #chat-section{display:none}
+}
+
+@media(max-width:900px){
+  .page-outer{flex-direction:column;padding:0 14px 80px}
+  .page-right{display:none}
+  .float-chat-btn{display:flex}
+  #chat-section{display:block}
+  nav{padding:0 14px}.nav-links a:not(.nav-cta){display:none}
+}
+@media(max-width:480px){
+  .hero{padding:28px 18px}.hero h1{font-size:22px}
+  .chat-container{height:420px}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-brand" href="#top">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="11" stroke="#4a7fc1" stroke-width="2"/><path d="M8 14s1.5 2 4 2 4-2 4-2" stroke="#4a7fc1" stroke-width="1.8" stroke-linecap="round"/><circle cx="9" cy="10" r="1.2" fill="#4a7fc1"/><circle cx="15" cy="10" r="1.2" fill="#4a7fc1"/></svg>
+    MindBridge
+  </a>
+  <div class="nav-links">
+    <a href="#awareness">Mood</a>
+    <a href="#journal">Journal</a>
+    <a href="#resources">Resources</a>
+    <a href="#chat-section">AI Chat</a>
+    <a href="#predict">Risk Check</a>
+    <a href="#connect" class="nav-cta">🆘 Get Help</a>
+  </div>
+</nav>
+
+<!-- ALERT -->
+<div class="alert-banner" id="alertBanner">
+  <button class="ab-close" id="alertClose">✕</button>
+  <strong>⚠ High Distress Detected</strong>
+  You are not alone. Please reach out — help is available right now.
+</div>
+
+<!-- MODAL -->
+<div class="modal-backdrop" id="resourceModal">
+  <div class="modal">
+    <button class="close-btn" id="modalClose">✕</button>
+    <h3 id="modalTitle" style="margin-bottom:10px;font-size:17px;font-weight:700"></h3>
+    <p id="modalBody" style="font-size:13.5px;color:var(--muted);line-height:1.6;margin-bottom:16px"></p>
+    <a class="btn btn-primary btn-sm" href="https://www.nimh.nih.gov/health" target="_blank">Learn More ↗</a>
+  </div>
+</div>
+
+<!-- FLOATING CHAT BUTTON -->
+<button class="float-chat-btn" id="floatChatBtn" title="Talk to MindBridge AI">
+  <div class="float-badge">AI</div>
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+</button>
+
+<div class="page-outer" id="top">
+
+<!-- LEFT COLUMN -->
+<div class="page-left">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-badge">AI-Powered Mental Wellness</div>
+    <h1>You Matter. <span>Reach Out,</span> Find Support.</h1>
+    <p>MindBridge uses empathetic AI to help you understand your mental health, detect early warning signs, and connect you with real support — when you need it most.</p>
+    <div class="hero-actions">
+      <a href="#chat-section" class="btn btn-primary">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Talk to AI Agent
+      </a>
+      <a href="#journal" class="btn btn-green">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+        Write in Journal
+      </a>
+      <a href="#connect" class="btn btn-danger">🆘 Crisis Helplines</a>
+    </div>
+  </section>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b45309" stroke-width="2" stroke-linecap="round" style="flex-shrink:0;margin-top:2px"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    <p><strong>Disclaimer:</strong> MindBridge is an AI awareness tool — <strong>not a substitute for professional medical advice.</strong> If you are in crisis, contact emergency services or a licensed mental health professional immediately.</p>
+  </div>
+
+  <!-- MOOD TRACKER -->
+  <section id="awareness">
+    <div class="section-hd">
+      <div class="section-tag tag-blue">Awareness</div>
+      <h2>How Are You Feeling Today?</h2>
+      <p>Track your daily mood — the first step toward understanding your mental wellness patterns.</p>
+    </div>
+    <div class="card">
+      <p style="font-size:13.5px;color:var(--muted)">Select the mood that best describes how you feel right now:</p>
+      <div class="mood-grid" id="moodGrid">
+        <button class="mood-btn" data-mood="great" data-level="1"><span class="mood-emoji">😄</span>Great</button>
+        <button class="mood-btn" data-mood="good"  data-level="2"><span class="mood-emoji">🙂</span>Good</button>
+        <button class="mood-btn" data-mood="okay"  data-level="3"><span class="mood-emoji">😐</span>Okay</button>
+        <button class="mood-btn" data-mood="low"   data-level="4"><span class="mood-emoji">😔</span>Low</button>
+        <button class="mood-btn" data-mood="distressed" data-level="5"><span class="mood-emoji">😢</span>Distressed</button>
+      </div>
+      <div class="mood-feedback" id="moodFeedback"></div>
+    </div>
+
+    <!-- WELLNESS RING -->
+    <div class="card">
+      <div class="section-tag tag-green">Wellness Snapshot</div>
+      <div class="wellness-score">
+        <div class="score-ring">
+          <svg width="90" height="90" viewBox="0 0 90 90">
+            <circle cx="45" cy="45" r="36" fill="none" stroke="#e5e7eb" stroke-width="9"/>
+            <circle cx="45" cy="45" r="36" fill="none" stroke="#4a7fc1" stroke-width="9" stroke-dasharray="226" stroke-dashoffset="68" stroke-linecap="round"/>
+          </svg>
+          <div class="ring-text">70<span style="font-size:9px;color:var(--muted);display:block">/100</span></div>
+        </div>
+        <div style="flex:1">
+          <h3 style="font-size:16px;font-weight:700;margin-bottom:6px">Your Wellness Snapshot</h3>
+          <p style="font-size:13px;color:var(--muted);margin-bottom:10px">Your overall wellness appears moderate. Small daily habits can make a big difference.</p>
+          <div class="pillars">
+            <div class="pillar"><div class="pillar-label">Sleep</div><div class="pillar-bar"><div class="pillar-fill p-sleep" style="width:60%"></div></div><div class="pillar-pct">60%</div></div>
+            <div class="pillar"><div class="pillar-label">Social</div><div class="pillar-bar"><div class="pillar-fill p-social" style="width:75%"></div></div><div class="pillar-pct">75%</div></div>
+            <div class="pillar"><div class="pillar-label">Stress</div><div class="pillar-bar"><div class="pillar-fill p-stress" style="width:55%"></div></div><div class="pillar-pct">55%</div></div>
+            <div class="pillar"><div class="pillar-label">Activity</div><div class="pillar-bar"><div class="pillar-fill p-exercise" style="width:80%"></div></div><div class="pillar-pct">80%</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- JOURNAL -->
+  <section id="journal">
+    <div class="section-hd">
+      <div class="section-tag tag-purple">Early Detection · RAG</div>
+      <h2>Safe Space Journal</h2>
+      <p>Express your thoughts freely. The AI gently detects distress signals and suggests timely support.</p>
+    </div>
+    <div class="card">
+      <div class="journal-wrap">
+        <textarea id="journalText" placeholder="Write how you're feeling today… What's been on your mind? You are in a safe space." maxlength="1000"></textarea>
+        <div class="journal-actions">
+          <button class="btn btn-primary btn-sm" id="analyzeBtn">🔍 Analyze Entry</button>
+          <button class="btn btn-outline btn-sm" id="clearJournal">Clear</button>
+          <span class="journal-char" id="charCount">0 / 1000</span>
+        </div>
+        <div class="analysis-result" id="analysisResult"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section id="resources">
+    <div class="section-hd">
+      <div class="section-tag tag-green">Resources & Education</div>
+      <h2>Tools to Support Your Journey</h2>
+      <p>Evidence-based strategies for mindfulness, coping, and self-care.</p>
+    </div>
+    <div class="card">
+      <div class="tab-bar">
+        <button class="tab-btn active" data-tab="learn">📚 Learn</button>
+        <button class="tab-btn" data-tab="breathe">🌬 Breathe</button>
+        <button class="tab-btn" data-tab="coping">💡 Coping Tips</button>
+      </div>
+      <div class="tab-panel active" id="tab-learn">
+        <div class="resource-grid">
+          <div class="resource-card" data-title="Understanding Depression" data-body="Depression is a common condition with persistent sadness, loss of interest, and low energy. It is highly treatable with therapy, medication, and lifestyle changes. Recognizing symptoms early leads to better outcomes. Look for changes in sleep, appetite, concentration, and feelings of hopelessness.">
+            <div class="ri ri-blue"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1e40af" stroke-width="2" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg></div>
+            <h4>Understanding Depression</h4>
+            <p>Signs, causes, and paths to recovery from depression.</p>
+          </div>
+          <div class="resource-card" data-title="Managing Anxiety" data-body="Anxiety disorders are the most common mental health conditions. Techniques like CBT, mindfulness, controlled breathing, and regular exercise significantly reduce symptoms. Journaling your triggers and responses helps identify patterns to work on with a therapist.">
+            <div class="ri ri-purple"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#6d4c9e" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+            <h4>Managing Anxiety</h4>
+            <p>CBT-based techniques and mindfulness practices for anxiety relief.</p>
+          </div>
+          <div class="resource-card" data-title="Mindfulness & Meditation" data-body="Mindfulness is the practice of being present and aware without judgment. Daily 10-minute meditation sessions reduce cortisol levels, improve focus, and build emotional resilience. Start with guided breathing, body scans, or gratitude practices.">
+            <div class="ri ri-green"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#2e7d6e" stroke-width="2" stroke-linecap="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></div>
+            <h4>Mindfulness & Meditation</h4>
+            <p>Daily practices to build resilience and emotional balance.</p>
+          </div>
+          <div class="resource-card" data-title="Suicide Prevention" data-body="Warning signs include talking about death, hopelessness, withdrawing socially, giving away possessions, and drastic mood changes. If you notice these in yourself or someone else, reach out immediately. Speaking about it openly saves lives. The National Suicide Prevention Lifeline is available 24/7 at 988.">
+            <div class="ri ri-teal"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#0e7490" stroke-width="2" stroke-linecap="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
+            <h4>Suicide Prevention</h4>
+            <p>Recognise warning signs and know how to respond compassionately.</p>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-breathe">
+        <div class="breathing-wrap">
+          <p style="font-size:13.5px;color:var(--muted);margin-bottom:18px">The 4-7-8 technique activates your body's calm response. Follow the circle.</p>
+          <div class="breath-circle" id="breathCircle">Ready</div>
+          <div style="font-size:15px;font-weight:600;margin-bottom:6px" id="breathInstruction">Press Start to begin</div>
+          <div style="font-size:13px;color:var(--muted)" id="breathCount">Round 0 / 4</div>
+          <div class="breath-controls">
+            <button class="btn btn-primary btn-sm" id="breathStart">▶ Start</button>
+            <button class="btn btn-outline btn-sm" id="breathStop">■ Stop</button>
+          </div>
+        </div>
+      </div>
+      <div class="tab-panel" id="tab-coping">
+        <ul class="tips-list">
+          <li><span class="tip-icon">🌿</span><div><strong>Ground yourself (5-4-3-2-1):</strong> Name 5 things you see, 4 you can touch, 3 you hear, 2 you smell, 1 you taste. Interrupts anxiety spirals instantly.</div></li>
+          <li><span class="tip-icon">💬</span><div><strong>Talk to someone you trust:</strong> Sharing feelings with a friend, family member, or counselor reduces emotional burden significantly.</div></li>
+          <li><span class="tip-icon">🚶</span><div><strong>Move your body:</strong> A 20-minute walk triggers endorphins. Regular movement is one of the most effective natural antidepressants.</div></li>
+          <li><span class="tip-icon">📵</span><div><strong>Limit social media:</strong> Heavy social media use is linked to higher depression and anxiety. Schedule screen-free time daily.</div></li>
+          <li><span class="tip-icon">😴</span><div><strong>Prioritise sleep:</strong> Aim for 7–9 hours. Sleep and mental health are deeply intertwined — poor sleep amplifies all symptoms.</div></li>
+          <li><span class="tip-icon">📓</span><div><strong>Gratitude journaling:</strong> Writing three things you're grateful for each day rewires neural pathways toward positivity over time.</div></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- AI CHAT (mobile / small screen only — hidden on desktop via CSS) -->
+  <section id="chat-section" class="chat-section">
+    <div class="section-hd">
+      <div class="section-tag tag-teal">Empathetic AI Agent</div>
+      <h2>Talk to MindBridge AI</h2>
+      <p>Your empathetic AI companion — available 24/7, judgment-free.</p>
+    </div>
+    <div class="chat-container" id="chatContainerMobile">
+      <div class="chat-header">
+        <div class="ch-avatar">🧠</div>
+        <div class="ch-info">
+          <strong>MindBridge AI</strong>
+          <span>Online · Ready to listen</span>
+        </div>
+        <div class="ch-status"></div>
+      </div>
+      <div class="chat-messages" id="chatMessagesMobile">
+        <div class="msg bot">
+          <div class="msg-avatar">🤖</div>
+          <div>
+            <div class="msg-bubble">Hello! I'm MindBridge AI. I'm here to listen and support you — without judgment. 💙<br><br>How are you feeling today?</div>
+            <div class="msg-time"></div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-suggestions" id="chatSuggestionsMobile">
+        <button class="suggestion-chip" data-msg="I'm feeling anxious today">😰 Feeling anxious</button>
+        <button class="suggestion-chip" data-msg="I can't sleep and feel overwhelmed">😴 Can't sleep</button>
+        <button class="suggestion-chip" data-msg="I need some coping strategies">💡 Coping strategies</button>
+        <button class="suggestion-chip" data-msg="I feel very sad and hopeless">😢 Feeling hopeless</button>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInputMobile" type="text" placeholder="Type your message here…" autocomplete="off"/>
+        <button class="chat-send" id="chatSendMobile">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- RISK PREDICTOR -->
+  <section id="predict">
+    <div class="section-hd">
+      <div class="section-tag tag-purple">Predictive Prevention</div>
+      <h2>Stress & Risk Forecaster</h2>
+      <p>Answer a few quick questions. Our AI estimates your stress load and suggests preventive actions.</p>
+    </div>
+    <div class="card">
+      <div class="predictor-grid">
+        <div class="predictor-item">
+          <label>Sleep Quality (last 3 nights)</label>
+          <select id="ps_sleep"><option value="3">Good (7+ hrs)</option><option value="2">Fair (5–7 hrs)</option><option value="1">Poor (&lt;5 hrs)</option></select>
+        </div>
+        <div class="predictor-item">
+          <label>Work / Academic Pressure</label>
+          <select id="ps_work"><option value="1">Low</option><option value="2">Moderate</option><option value="3">High</option><option value="4">Overwhelming</option></select>
+        </div>
+        <div class="predictor-item">
+          <label>Social Connection</label>
+          <select id="ps_social"><option value="3">Strong</option><option value="2">Occasional</option><option value="1">Isolated</option></select>
+        </div>
+        <div class="predictor-item">
+          <label>Recent Life Events</label>
+          <select id="ps_events"><option value="1">None / Positive</option><option value="2">Minor setbacks</option><option value="3">Loss / Trauma</option><option value="4">Crisis</option></select>
+        </div>
+        <div class="predictor-item" style="grid-column:1/-1">
+          <label>Current Stress Level (self-rated): <strong id="stressVal" style="color:var(--accent)">5</strong>/10</label>
+          <input type="range" min="1" max="10" value="5" id="ps_stress"/>
+        </div>
+      </div>
+      <div style="margin-top:16px">
+        <button class="btn btn-primary" id="predictBtn">📊 Generate Risk Assessment</button>
+      </div>
+      <div class="predict-output" id="predictOutput"></div>
+    </div>
+  </section>
+
+  <!-- HELPLINES -->
+  <section id="connect">
+    <div class="section-hd">
+      <div class="section-tag tag-red">Crisis Support</div>
+      <h2>You Are Not Alone — Get Help Now</h2>
+      <p>Trained crisis counselors available 24/7. Reaching out is a sign of strength.</p>
+    </div>
+    <div class="card">
+      <ul class="helpline-list">
+        <li>
+          <div class="hl-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 1.2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 8.91A16 16 0 0 0 15.09 15.91l.79-.79a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 17.19z"/></svg></div>
+          <div class="hl-info"><strong>National Suicide Prevention Lifeline (USA)</strong><span>Free, confidential support 24/7 — call or chat</span></div>
+          <a class="hl-number" href="tel:988">988</a>
+        </li>
+        <li>
+          <div class="hl-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.2" stroke-linecap="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg></div>
+          <div class="hl-info"><strong>Crisis Text Line</strong><span>Text HOME to connect with a crisis counselor</span></div>
+          <a class="hl-number" href="sms:741741">741741</a>
+        </li>
+        <li>
+          <div class="hl-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg></div>
+          <div class="hl-info"><strong>iCall — India (TISS)</strong><span>Psychological support line, Mon–Sat 8am–10pm IST</span></div>
+          <a class="hl-number" href="tel:9152987821">9152987821</a>
+        </li>
+        <li>
+          <div class="hl-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.2" stroke-linecap="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg></div>
+          <div class="hl-info"><strong>Samaritans (UK & Ireland)</strong><span>24/7 emotional support for anyone in distress</span></div>
+          <a class="hl-number" href="tel:116123">116 123</a>
+        </li>
+        <li>
+          <div class="hl-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b91c1c" stroke-width="2.2" stroke-linecap="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2"/></svg></div>
+          <div class="hl-info"><strong>Lifeline Australia</strong><span>24/7 crisis support and suicide prevention</span></div>
+          <a class="hl-number" href="tel:131114">13 11 14</a>
+        </li>
+      </ul>
+      <div style="margin-top:16px;padding:14px;background:var(--teal-light);border-radius:8px;border:1px solid #a5f3fc">
+        <p style="font-size:13px;color:var(--teal);font-weight:600;margin-bottom:4px">🌐 Find Local Resources</p>
+        <p style="font-size:12.5px;color:#0e7490">Visit <a href="https://www.findahelpline.com" target="_blank" style="color:var(--teal);font-weight:600">findahelpline.com</a> to locate helplines in your country.</p>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /page-left -->
+
+<!-- RIGHT COLUMN — sticky AI chat sidebar -->
+<div class="page-right">
+  <div class="chat-sidebar-wrap">
+    <div class="chat-sidebar-hd">
+      <div class="section-tag tag-teal" style="margin-bottom:6px">Empathetic AI Agent</div>
+      <h2>MindBridge AI</h2>
+      <p>Available 24/7, judgment-free. Type anything below.</p>
+    </div>
+    <div class="chat-container" id="chatContainer">
+      <div class="chat-header">
+        <div class="ch-avatar">🧠</div>
+        <div class="ch-info">
+          <strong>MindBridge AI</strong>
+          <span>Online · Ready to listen</span>
+        </div>
+        <div class="ch-status"></div>
+      </div>
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg bot">
+          <div class="msg-avatar">🤖</div>
+          <div>
+            <div class="msg-bubble">Hello! I'm MindBridge AI, your empathetic mental wellness companion. I'm here to listen, support, and guide you — without judgment. 💙<br><br>How are you feeling today? You can share anything with me.</div>
+            <div class="msg-time" id="initTime"></div>
+          </div>
+        </div>
+        <div class="msg bot">
+          <div class="msg-avatar">🤖</div>
+          <div>
+            <div class="msg-bubble">I'm an AI support tool — not a medical service. For emergencies please call <strong>988</strong> (USA) or your local helpline.</div>
+            <div class="msg-time"></div>
+          </div>
+        </div>
+      </div>
+      <div class="chat-suggestions" id="chatSuggestions">
+        <button class="suggestion-chip" data-msg="I'm feeling anxious today">😰 Anxious</button>
+        <button class="suggestion-chip" data-msg="I can't sleep and feel overwhelmed">😴 Can't sleep</button>
+        <button class="suggestion-chip" data-msg="I need some coping strategies">💡 Coping tips</button>
+        <button class="suggestion-chip" data-msg="I feel very sad and hopeless">😢 Hopeless</button>
+        <button class="suggestion-chip" data-msg="Tell me about mindfulness">🧘 Mindfulness</button>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" type="text" placeholder="Type your message…" autocomplete="off"/>
+        <button class="chat-send" id="chatSend">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div><!-- /page-right -->
+
+</div><!-- /page-outer -->
+
+<div class="site-footer">
+  <p>MindBridge is an awareness platform — not a medical service. Always consult a qualified professional for diagnosis and treatment.</p>
+  <p style="margin-top:6px;font-size:11px">Made with IBM Bob &nbsp;|&nbsp; Powered by IBM watsonx Orchestrate</p>
+</div>
+
+<!-- IBM watsonx config stored for reference — external widget loads only when deployed on IBM Cloud -->
+
+<script>
+(function(){
+  /* ─── TIME HELPER ─── */
+  function now(){ var d=new Date(); return d.getHours()+':'+String(d.getMinutes()).padStart(2,'0'); }
+  document.getElementById('initTime').textContent = now();
+
+  /* ─── ALERT ─── */
+  function showAlert(){
+    document.getElementById('alertBanner').classList.add('show');
+    setTimeout(function(){ document.getElementById('alertBanner').classList.remove('show'); },12000);
+  }
+  document.getElementById('alertClose').addEventListener('click',function(){ document.getElementById('alertBanner').classList.remove('show'); });
+
+  /* ─── MOOD ─── */
+  var moodMap = {
+    great: {cls:'', msg:'😊 That\'s wonderful! Keep nurturing what\'s making you feel great. Consider logging this moment in your journal.'},
+    good:  {cls:'', msg:'🙂 Glad you\'re feeling good! A brief mindfulness session can help sustain this positive state.'},
+    okay:  {cls:'warn', msg:'😐 Feeling just "okay" is valid. Try the breathing exercise or write in your journal to process your thoughts.'},
+    low:   {cls:'warn', msg:'😔 I hear you. Low moods are valid. Try reaching out to someone you trust, or use the 5-4-3-2-1 grounding exercise.'},
+    distressed:{cls:'alert', msg:'💙 You\'re not alone. Please consider talking to someone right now — see the helplines below, or chat with our AI agent.'}
+  };
+  document.querySelectorAll('.mood-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.mood-btn').forEach(function(b){ b.classList.remove('selected'); });
+      btn.classList.add('selected');
+      var m = moodMap[btn.dataset.mood];
+      var fb = document.getElementById('moodFeedback');
+      fb.className = 'mood-feedback show' + (m.cls?' '+m.cls:'');
+      fb.textContent = m.msg;
+      if(btn.dataset.mood==='distressed') showAlert();
+    });
+  });
+
+  /* ─── JOURNAL RAG ─── */
+  var distress = {
+    high:['suicid','end my life','don\'t want to live','kill myself','no reason to live','hopeless','can\'t go on','better off without me','worthless'],
+    medium:['depressed','anxious','overwhelmed','exhausted','can\'t sleep','no energy','nobody cares','alone','trapped','hate myself','scared','panic','crying','numb'],
+    low:['stressed','tired','sad','worried','difficult','struggling','hard time','upset','frustrated','unmotivated']
+  };
+  var journalEl = document.getElementById('journalText');
+  journalEl.addEventListener('input',function(){
+    document.getElementById('charCount').textContent = journalEl.value.length + ' / 1000';
+  });
+  document.getElementById('clearJournal').addEventListener('click',function(){
+    journalEl.value=''; document.getElementById('charCount').textContent='0 / 1000';
+    var r=document.getElementById('analysisResult'); r.className='analysis-result'; r.innerHTML='';
+  });
+  document.getElementById('analyzeBtn').addEventListener('click',function(){
+    var txt = journalEl.value.toLowerCase().trim();
+    if(txt.length < 10){ alert('Please write at least a few sentences.'); return; }
+    var sigs={high:[],medium:[],low:[]};
+    Object.keys(distress).forEach(function(lv){ distress[lv].forEach(function(kw){ if(txt.indexOf(kw)!==-1) sigs[lv].push(kw); }); });
+    var score = Math.min(100, sigs.high.length*40 + sigs.medium.length*15 + sigs.low.length*5);
+    var level, fc, advice;
+    if(score>=50||sigs.high.length>0){
+      level='High'; fc='fill-high';
+      advice='⚠ Your entry shows signs of significant distress. Please reach out to a crisis counselor or trusted person now. You are valued.';
+      showAlert();
+    } else if(score>=20){
+      level='Moderate'; fc='fill-medium';
+      advice='💛 Your entry reflects some emotional difficulty. Consider the coping strategies above, or talk to our AI agent.';
+    } else {
+      level='Low'; fc='fill-low';
+      advice='✅ Your entry suggests a generally stable emotional state. Keep up your self-care routine.';
+    }
+    var all = sigs.high.concat(sigs.medium).concat(sigs.low);
+    var sigText = all.length ? 'Detected signals: <em>'+all.slice(0,5).join(', ')+(all.length>5?'…':'')+'</em>' : 'No specific distress signals detected.';
+    var html = '<div style="font-weight:700;font-size:14px;margin-bottom:6px">Distress Level: <span style="color:'+(score>=50?'var(--red)':score>=20?'var(--amber)':'var(--green)')+'">'+level+'</span></div>'
+      +'<div style="font-size:12.5px;color:var(--muted);margin-bottom:10px">'+sigText+'</div>'
+      +'<div style="font-size:12px;color:var(--muted);margin-bottom:4px;display:flex;justify-content:space-between"><span>Risk Indicator</span><span>'+score+'%</span></div>'
+      +'<div class="risk-bar"><div class="risk-bar-fill '+fc+'" id="rFill" style="width:0"></div></div>'
+      +'<p style="margin-top:12px;font-size:13.5px;color:var(--muted);line-height:1.55">'+advice+'</p>'
+      +(level!=='Low'?'<div style="margin-top:12px"><a href="#connect" class="btn btn-danger btn-sm">View Crisis Helplines</a></div>':'');
+    var res=document.getElementById('analysisResult');
+    res.innerHTML=html; res.className='analysis-result show';
+    setTimeout(function(){ var f=document.getElementById('rFill'); if(f) f.style.width=score+'%'; },60);
+  });
+
+  /* ─── TABS ─── */
+  document.querySelectorAll('.tab-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      document.querySelectorAll('.tab-btn').forEach(function(b){ b.classList.remove('active'); });
+      document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+      btn.classList.add('active');
+      document.getElementById('tab-'+btn.dataset.tab).classList.add('active');
+    });
+  });
+
+  /* ─── RESOURCE MODAL ─── */
+  document.querySelectorAll('.resource-card').forEach(function(c){
+    c.addEventListener('click',function(){
+      document.getElementById('modalTitle').textContent=c.dataset.title;
+      document.getElementById('modalBody').textContent=c.dataset.body;
+      document.getElementById('resourceModal').classList.add('open');
+    });
+  });
+  document.getElementById('modalClose').addEventListener('click',function(){ document.getElementById('resourceModal').classList.remove('open'); });
+  document.getElementById('resourceModal').addEventListener('click',function(e){ if(e.target===this) this.classList.remove('open'); });
+
+  /* ─── BREATHING ─── */
+  var bRunning=false, bPhase=0, bRound=0, bTimer=null;
+  var phases=[
+    {label:'Inhale…', dur:4000, cls:'inhale', sub:'4 seconds'},
+    {label:'Hold…',   dur:7000, cls:'',       sub:'7 seconds'},
+    {label:'Exhale…', dur:8000, cls:'exhale', sub:'8 seconds'}
+  ];
+  function runBreath(){
+    if(!bRunning) return;
+    var p=phases[bPhase];
+    var circle=document.getElementById('breathCircle');
+    circle.className='breath-circle '+p.cls;
+    circle.textContent=p.label;
+    document.getElementById('breathInstruction').textContent=p.label;
+    document.getElementById('breathCount').textContent=p.sub+' — Round '+(bRound+1)+' / 4';
+    bTimer=setTimeout(function(){
+      bPhase++; if(bPhase>=3){ bPhase=0; bRound++; }
+      if(bRound>=4){ stopBreath(); return; } runBreath();
+    }, p.dur);
+  }
+  function stopBreath(){
+    bRunning=false; clearTimeout(bTimer); bPhase=0; bRound=0;
+    var c=document.getElementById('breathCircle'); c.className='breath-circle'; c.textContent='Done ✓';
+    document.getElementById('breathInstruction').textContent='Great job! Exercise complete.';
+    document.getElementById('breathCount').textContent='';
+  }
+  document.getElementById('breathStart').addEventListener('click',function(){ if(!bRunning){ bRunning=true; bPhase=0; bRound=0; runBreath(); } });
+  document.getElementById('breathStop').addEventListener('click',stopBreath);
+
+  /* ─── RISK PREDICTOR ─── */
+  document.getElementById('ps_stress').addEventListener('input',function(){ document.getElementById('stressVal').textContent=this.value; });
+  document.getElementById('predictBtn').addEventListener('click',function(){
+    var sleep=+document.getElementById('ps_sleep').value;
+    var work=+document.getElementById('ps_work').value;
+    var social=+document.getElementById('ps_social').value;
+    var events=+document.getElementById('ps_events').value;
+    var stress=+document.getElementById('ps_stress').value;
+    var raw=(work*2.5)+(events*2.5)+(stress*1.5)-(sleep*2)-(social*1.5)+10;
+    var score=Math.max(0,Math.min(100,Math.round(raw)));
+    var level,color,advice,actions;
+    if(score>=65){
+      level='High Risk'; color='var(--red)';
+      advice='Your stressors indicate significant risk for burnout or mental health deterioration. Immediate preventive action recommended.';
+      actions=['Speak to a mental health professional this week','Reduce workload where possible','Prioritise sleep above all else','Call 988 or a helpline if overwhelmed'];
+      showAlert();
+    } else if(score>=35){
+      level='Moderate Risk'; color='var(--amber)';
+      advice='You are experiencing moderate stress. Building consistent self-care habits now can prevent escalation.';
+      actions=['Try the 4-7-8 breathing exercise daily','Schedule regular social check-ins','Limit caffeine and improve sleep','Use the journal to process emotions'];
+    } else {
+      level='Low Risk'; color='var(--green)';
+      advice='Your lifestyle factors suggest a lower stress load. Keep maintaining healthy habits.';
+      actions=['Continue regular physical activity','Maintain social connections','Practice daily gratitude journaling','Check in weekly with this tool'];
+    }
+    var html='<div style="display:flex;align-items:center;gap:12px;margin-bottom:14px">'
+      +'<div style="font-size:28px;font-weight:800;color:'+color+'">'+score+'</div>'
+      +'<div><div style="font-weight:700;font-size:15px;color:'+color+'">'+level+'</div><div style="font-size:12px;color:var(--muted)">Predicted Stress Index</div></div>'
+      +'</div>'
+      +'<p style="font-size:13.5px;color:var(--muted);margin-bottom:12px">'+advice+'</p>'
+      +'<div style="font-size:13px;font-weight:700;margin-bottom:8px">Recommended Actions:</div>'
+      +'<ul style="padding-left:18px;font-size:13px;color:var(--muted);line-height:2">'
+      +actions.map(function(a){ return '<li>'+a+'</li>'; }).join('')+'</ul>';
+    var out=document.getElementById('predictOutput');
+    out.innerHTML=html; out.className='predict-output show';
+    out.style.borderColor=color;
+    out.style.background=score>=65?'var(--red-light)':score>=35?'var(--amber-light)':'var(--green-light)';
+  });
+
+  /* ─── BUILT-IN AI CHAT (no external auth needed) ─── */
+  var responses = {
+    anxiety:
+      "I hear you — anxiety can feel really overwhelming, but you are not alone in this. 💙\n\n**Right now, try this:**\n• Take a slow breath in for 4 counts, hold for 4, out for 4\n• Name 5 things you can see around you right now\n• Remind yourself: *this feeling is temporary and will pass*\n\n**Longer-term support:**\n• Scroll up to try the 4-7-8 Breathing Exercise in the Resources tab\n• Cognitive Behavioural Therapy (CBT) is highly effective for anxiety — a therapist can guide you\n\nWould you like to tell me more about what's triggering your anxiety?",
+
+    sleep:
+      "Poor sleep and mental health are deeply connected — you're right to pay attention to this. 😴\n\n**Evidence-based sleep tips:**\n• Keep a consistent wake time every day (even weekends)\n• Avoid screens and bright lights 1 hour before bed\n• Keep your room cool and dark\n• Try a 5-minute body scan meditation as you lie down\n• Avoid caffeine after 2pm\n\nHow many days have you been struggling with sleep? That context helps me give better guidance.",
+
+    stress:
+      "Stress builds up gradually and it's important that you're recognising it. 🌿\n\n**Quick stress relief:**\n• Step outside for even 5 minutes — fresh air genuinely helps\n• Try the 5-4-3-2-1 grounding technique: 5 things you see, 4 you touch, 3 you hear, 2 you smell, 1 you taste\n• Write in the journal above to get thoughts out of your head\n\n**Longer term:** Try using the Risk Forecaster section — it can highlight which factors are driving your stress most.\n\nWhat's the main source of stress for you right now?",
+
+    sad:
+      "I'm truly sorry you're feeling this way. Your pain is real, and your feelings are completely valid. 💜\n\nSadness is often our mind's signal that something needs care and attention.\n\n**Small steps that can help:**\n• Reach out to one person you trust — even a text message helps\n• A short walk outside can gently shift your mood\n• Write in the Safe Space Journal — getting thoughts out can lighten the load\n• Be gentle with yourself — healing isn't linear\n\nI'm here and I'm listening. Would you like to share more about what's been going on?",
+
+    hopeless:
+      "Thank you for trusting me with something this heavy. It takes courage. 💙\n\nFeeling hopeless is a serious signal that you deserve real, professional support — and things **can** get better.\n\n🆘 **Please reach out right now:**\n• **USA:** Call or text **988** (Suicide & Crisis Lifeline)\n• **India:** Call **9152987821** (iCall, TISS)\n• **UK:** Call **116 123** (Samaritans)\n• **Australia:** Call **13 11 14** (Lifeline)\n• **Worldwide:** findahelpline.com\n\nYou matter more than you know. Would you like help finding a counselor near you?",
+
+    angry:
+      "It's completely okay to feel angry — anger is a valid emotion that tells us something important. 🔥\n\n**When anger feels intense:**\n• Step away from the situation if safe to do so\n• Take 10 slow, deep breaths before responding\n• Write out exactly what you're feeling — don't hold back on paper\n• Physical movement (a walk, exercise) helps discharge anger safely\n\nChronically feeling angry can sometimes be a sign of underlying depression or burnout. Would you like to explore what's underneath the anger?",
+
+    lonely:
+      "Loneliness is one of the most painful human experiences, and I'm glad you're talking about it. 🤝\n\nYou are not as alone as you feel right now — I'm here with you.\n\n**Building connection:**\n• Reach out to one person today, even just to say hello\n• Consider joining a local group, class, or online community around something you enjoy\n• Volunteering is one of the fastest ways to feel connected and purposeful\n• A therapist can provide a safe, consistent space to feel heard\n\nWould you like to talk more about what's been making you feel isolated?",
+
+    mindfulness:
+      "Mindfulness is one of the most powerful tools for mental wellness — and it's free! 🧘\n\n**How to start (2 minutes):**\n1. Sit comfortably and close your eyes\n2. Focus only on the sensation of your breath\n3. When thoughts come (they will!), gently notice them and return to your breath\n4. That's it — you're meditating\n\n**Try these free apps:** Headspace, Calm, Insight Timer, UCLA Mindful\n\nScroll up to the Resources tab — there's a guided 4-7-8 breathing exercise you can do right now. Would you like me to walk you through it?",
+
+    coping:
+      "Here are evidence-based coping strategies that genuinely work: 💡\n\n**Immediate relief:**\n1. **4-7-8 Breathing** — inhale 4s, hold 7s, exhale 8s (try the tool above)\n2. **5-4-3-2-1 Grounding** — engage all five senses\n3. **Cold water** — splash face or hold ice — activates the dive reflex and calms panic fast\n\n**Daily habits:**\n4. **Movement** — even 20 min walking raises mood significantly\n5. **Journaling** — write in the Safe Space Journal above\n6. **Limit social media** — set a daily 30-min cap\n7. **Social connection** — text one person something kind today\n\nWhich of these feels most doable for you right now?",
+
+    depression:
+      "Depression is a real, serious medical condition — not a weakness or a choice. 💙 I'm glad you're talking about it.\n\n**Signs you may be experiencing depression:**\n• Persistent low mood for 2+ weeks\n• Loss of interest in things you used to enjoy\n• Changes in sleep, appetite, or energy\n• Difficulty concentrating\n• Feelings of worthlessness\n\n**What helps:**\n• Professional therapy (especially CBT) is the most effective treatment\n• Medication can help — speak to a doctor\n• Regular exercise, sleep, and social connection support recovery\n• Small daily structure helps — even making your bed counts\n\nPlease consider speaking to a mental health professional. Would you like help finding one?",
+
+    suicide:
+      "I'm so glad you're talking to me right now instead of acting on those thoughts. That matters. 💙\n\nYou are not a burden. You are not hopeless. And this pain, as real as it is, can get better with the right support.\n\n🆘 **Please contact a crisis line right now:**\n• **USA:** Call/text **988**\n• **India:** **9152987821**\n• **UK:** **116 123**\n• **Australia:** **13 11 14**\n• **Text worldwide:** Crisis Text Line — text HOME to 741741\n\nYou don't have to face this alone. Is there someone you can be with right now?",
+
+    greeting:
+      "Hello! 👋 I'm so glad you're here.\n\nI'm MindBridge AI — your empathetic mental wellness companion. I'm here to listen, support, and guide you through whatever you're experiencing, completely without judgment.\n\n**You can talk to me about:**\n• Anxiety, stress, or worry\n• Sadness or depression\n• Sleep problems\n• Coping strategies\n• Mindfulness and relaxation\n• Or simply how your day is going\n\nHow are you feeling today?",
+
+    thanks:
+      "You're so welcome. 💙 Reaching out takes courage — I'm proud of you for doing that.\n\nRemember, taking care of your mental health is just as important as physical health. You deserve support.\n\nI'm always here if you need to talk. Is there anything else on your mind?",
+
+    default:
+      "Thank you for sharing that with me — it means a lot that you feel safe enough to do so. 💙\n\nWhat you're feeling is valid, and you don't have to go through this alone.\n\nCould you tell me a little more about what's been going on? The more you share, the better I can understand how to support you.\n\nAnd always remember — if you're ever in crisis or immediate danger, please contact a helpline or emergency services right away. You matter."
+  };
+
+  function getBotResponse(msg){
+    var m = msg.toLowerCase();
+    if(m.match(/^(hi|hello|hey|good morning|good evening|howdy)/)) return responses.greeting;
+    if(m.match(/thank|thanks|appreciate/)) return responses.thanks;
+    if(m.match(/suicid|end my life|kill my|don.t want to (be alive|live)|want to die|no point living/)) return responses.suicide;
+    if(m.match(/hopeless|worthless|nothing matters|give up|no reason/)) return responses.hopeless;
+    if(m.match(/depress/)) return responses.depression;
+    if(m.match(/anxi|panic|nervous|worry|scared|fearful/)) return responses.anxiety;
+    if(m.match(/sleep|insomnia|can.t sleep|awake at night/)) return responses.sleep;
+    if(m.match(/stress|overwhelm|too much|pressure|burnout/)) return responses.stress;
+    if(m.match(/angry|anger|furious|rage|irritat/)) return responses.angry;
+    if(m.match(/lone|alone|isolat|no friends|nobody/)) return responses.lonely;
+    if(m.match(/sad|unhappy|cry|tears|low|down|miserable/)) return responses.sad;
+    if(m.match(/mindful|meditat|calm|relax|peace/)) return responses.mindfulness;
+    if(m.match(/cope|coping|strateg|how (do i|can i|to) feel|what (should|can) i do/)) return responses.coping;
+    return responses.default;
+  }
+
+  /* ─── CHAT ENGINE — shared by sidebar + mobile ─── */
+  function makeMsgEl(text, type){
+    var wrap = document.createElement('div');
+    wrap.className = 'msg ' + type;
+    var avatar = document.createElement('div');
+    avatar.className = 'msg-avatar';
+    avatar.textContent = type==='bot' ? '🤖' : '👤';
+    var inner = document.createElement('div');
+    var bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = text.replace(/\n/g,'<br>').replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>');
+    var time = document.createElement('div');
+    time.className = 'msg-time';
+    time.textContent = now();
+    inner.appendChild(bubble); inner.appendChild(time);
+    wrap.appendChild(avatar); wrap.appendChild(inner);
+    return wrap;
+  }
+
+  function addMsg(text, type, msgsEl){
+    msgsEl.appendChild(makeMsgEl(text, type));
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  }
+
+  function showTyping(msgsEl, tid){
+    var wrap = document.createElement('div');
+    wrap.className = 'msg bot'; wrap.id = tid;
+    var avatar = document.createElement('div');
+    avatar.className = 'msg-avatar'; avatar.textContent = '🤖';
+    var dots = document.createElement('div');
+    dots.className = 'typing';
+    dots.innerHTML = '<span></span><span></span><span></span>';
+    wrap.appendChild(avatar); wrap.appendChild(dots);
+    msgsEl.appendChild(wrap);
+    msgsEl.scrollTop = msgsEl.scrollHeight;
+  }
+
+  function removeTyping(tid){ var t=document.getElementById(tid); if(t) t.remove(); }
+
+  function buildChat(inputId, sendId, msgsId, suggestionsId, typingId){
+    var inputEl = document.getElementById(inputId);
+    var sendEl  = document.getElementById(sendId);
+    var msgsEl  = document.getElementById(msgsId);
+    var sugEl   = document.getElementById(suggestionsId);
+    if(!inputEl || !sendEl || !msgsEl) return;
+
+    function send(text){
+      if(!text.trim()) return;
+      addMsg(text, 'user', msgsEl);
+      inputEl.value='';
+      if(sugEl) sugEl.style.display='none';
+      showTyping(msgsEl, typingId);
+      var delay = 800 + Math.random()*700;
+      setTimeout(function(){
+        removeTyping(typingId);
+        addMsg(getBotResponse(text), 'bot', msgsEl);
+        if(text.toLowerCase().match(/hopeless|suicid|end.*life|kill.*myself/)) showAlert();
+      }, delay);
+    }
+
+    sendEl.addEventListener('click', function(){ send(inputEl.value); });
+    inputEl.addEventListener('keydown', function(e){ if(e.key==='Enter') send(this.value); });
+
+    if(sugEl){
+      sugEl.querySelectorAll('.suggestion-chip').forEach(function(chip){
+        chip.addEventListener('click', function(){ send(chip.dataset.msg); });
+      });
+    }
+  }
+
+  /* wire sidebar (desktop) */
+  buildChat('chatInput','chatSend','chatMessages','chatSuggestions','typingDesk');
+  /* wire mobile */
+  buildChat('chatInputMobile','chatSendMobile','chatMessagesMobile','chatSuggestionsMobile','typingMob');
+
+  /* ─── FLOAT BUTTON → SCROLL TO CHAT (mobile) ─── */
+  document.getElementById('floatChatBtn').addEventListener('click',function(){
+    document.getElementById('chat-section').scrollIntoView({behavior:'smooth'});
+    setTimeout(function(){ var el=document.getElementById('chatInputMobile'); if(el) el.focus(); },600);
+  });
+
+})();
+</script>
+</body>
+</html>
